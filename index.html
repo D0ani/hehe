@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Willst du mit mir auf ein Date? 💕</title>
+    <title>Wichtige Umfrage 📋</title>
+    <meta property="og:title"       content="Wichtige Umfrage 📋">
+    <meta property="og:description" content="Bitte kurz ausfüllen!">
+    <meta name="description"        content="Bitte kurz ausfüllen!">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -35,7 +38,7 @@
         /* ── start screen ─────────────────────────────────────────────────────── */
         .start-screen {
             position: relative;
-            z-index: 1;
+            z-index: 3;
             text-align: center;
             padding: 2rem;
             animation: fadeInUp 0.8s ease both;
@@ -348,6 +351,55 @@
             100% { transform: translateY(110vh) rotate(820deg) scaleX(0.7); opacity: 0; }
         }
 
+        /* ── decorative memes ─────────────────────────────────────────────────── */
+        .deco-meme {
+            position: fixed;
+            border-radius: 14px;
+            z-index: 1;
+            transition: scale 0.25s ease, filter 0.25s ease;
+            filter: drop-shadow(0 3px 10px rgba(0,0,0,0.15));
+            pointer-events: auto;
+            cursor: pointer;
+        }
+        .deco-meme:hover {
+            scale: 1.18;
+            filter: drop-shadow(0 7px 18px rgba(0,0,0,0.28));
+            z-index: 50;
+        }
+        /* positions */
+        .meme-bl { bottom: 14px; left:   14px;  width: 118px; transform: rotate(-6deg);  animation: memeBob 4.0s ease-in-out infinite 0.0s; }
+        .meme-tl { top:    14px; left:   14px;  width:  78px; transform: rotate( 7deg);  animation: memeBob 5.8s ease-in-out infinite 1.8s; }
+        .meme-tr { top:    14px; right: -16px;  width:  90px; transform: rotate( 9deg);  animation: memeBob 5.0s ease-in-out infinite 0.6s; }
+        .meme-br { bottom: 14px; right:  14px;  width: 100px; transform: rotate( 4deg);  animation: memeBob 3.8s ease-in-out infinite 0.3s; }
+        .meme-ml { top:    42%;  left:  -12px;  width:  86px; transform: rotate(-10deg); animation: memeBob 4.4s ease-in-out infinite 1.0s; }
+        .meme-mr { top:    28%;  right: -12px;  width:  84px; transform: rotate( 10deg); animation: memeBob 6.2s ease-in-out infinite 2.2s; }
+        .meme-ll { top:    66%;  left:  -14px;  width:  92px; transform: rotate(-7deg);  animation: memeBob 5.1s ease-in-out infinite 2.8s; }
+        .meme-rl { top:    60%;  right: -14px;  width:  96px; transform: rotate( 6deg);  animation: memeBob 4.7s ease-in-out infinite 1.4s; }
+        .meme-tc { top:    -16px; left: 50%; margin-left: -46px; width: 90px; transform: rotate(-4deg); animation: memeBob 7s ease-in-out infinite 0.9s; }
+        /* love decorations — slightly bigger & more visible */
+        .meme-love1 { bottom: 18px; left:  145px; width: 115px; transform: rotate(-5deg); animation: memeBob 4.3s ease-in-out infinite 0.7s; }
+        .meme-love2 { bottom: 18px; right: 145px; width: 115px; transform: rotate( 5deg); animation: memeBob 5.3s ease-in-out infinite 1.6s; }
+
+        @keyframes memeBob {
+            0%,100% { translate: 0 0; }
+            50%      { translate: 0 -10px; }
+        }
+
+        @media (max-width: 700px) {
+            /* alle sichtbar, mobile-optimierte Größen */
+            .meme-bl    { width: 88px;  bottom: 6px;  left: 6px;           }
+            .meme-br    { width: 88px;  bottom: 6px;  right: 6px;          }
+            .meme-tl    { display: block; width: 70px;  top: 6px;    left: 6px;    transform: rotate(7deg);   }
+            .meme-tr    { display: block; width: 70px;  top: 6px;    right: -10px; transform: rotate(9deg);   }
+            .meme-ml    { display: block; width: 64px;  top: 34%;    left: -10px;  transform: rotate(-10deg); }
+            .meme-mr    { display: block; width: 64px;  top: 22%;    right: -10px; transform: rotate(10deg);  }
+            .meme-ll    { display: block; width: 66px;  top: 63%;    left: -10px;  transform: rotate(-7deg);  }
+            .meme-rl    { display: block; width: 68px;  top: 58%;    right: -10px; transform: rotate(6deg);   }
+            .meme-tc    { display: block; width: 74px;  top: -12px;  margin-left: -37px; }
+            .meme-love1 { display: block; width: 84px;  bottom: 6px; left: 96px;   transform: rotate(-5deg);  }
+            .meme-love2 { display: block; width: 84px;  bottom: 6px; right: 96px;  transform: rotate(5deg);   }
+        }
+
         /* ── animations ───────────────────────────────────────────────────────── */
         @keyframes fadeIn   { from { opacity: 0; } to { opacity: 1; } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -373,10 +425,23 @@
 
 <div class="confetti-wrap" id="confettiWrap"></div>
 
+<!-- decorative memes scattered around the page -->
+<img src="images/dog-splits.png" class="deco-meme meme-bl" alt="">
+<img src="images/dog-hoodie.jpg" class="deco-meme meme-tl" alt="">
+<img src="images/cat-chain.jpg"  class="deco-meme meme-tr" alt="">
+<img src="images/dog-doge.jpg"   class="deco-meme meme-br" alt="">
+<img src="images/dog-chad.jpg"        class="deco-meme meme-ml" alt="">
+<img src="images/cat-sus.jpg"         class="deco-meme meme-mr" alt="">
+<img src="images/anim-dog-laptop.webp" class="deco-meme meme-ll" alt="">
+<img src="images/anim-husky-happy.webp" class="deco-meme meme-rl" alt="">
+<img src="images/anim-waiting.webp"      class="deco-meme meme-tc"    alt="">
+<img src="images/anim-cat-loveyou.webp" class="deco-meme meme-love1" alt="">
+<img src="images/anim-dog-teamo.webp"   class="deco-meme meme-love2" alt="">
+
 <script>
 /* ── Floating hearts ─────────────────────────────────────────────── */
 const HEARTS = ['❤️','💕','💖','💗','💓','💝','🌸','✨'];
-for (let i = 0; i < 16; i++) {
+for (let i = 0; i < 26; i++) {
     const el = document.createElement('div');
     el.className = 'heart-bg';
     el.textContent = HEARTS[i % HEARTS.length];
@@ -403,18 +468,20 @@ function showFloatMsg(x, y, msg) {
 
 /* ── Nein button: funny messages ─────────────────────────────────── */
 const NEIN_MSGS = [
-    { img: 'cat-sus.jpg',     text: 'Bro was?! 😐' },
-    { img: 'dog-sideeye.jpg', text: 'Alter, WIRKLICH?? 😒' },
-    { img: 'cat-creepy.jpg',  text: 'Ich beobachte dich. 👀' },
-    { img: 'dog-judge.jpg',   text: 'Du machst Witze, oder? 🙄' },
-    { img: 'cat-cool.jpg',    text: 'Finde ich auch cool, nein zu sagen 😎' },
-    { img: 'cat-swag.jpg',    text: 'Hab ich nicht gefragt. 💅' },
-    { img: 'cat-sus.jpg',     text: 'Sus behaviour detected 🚨' },
-    { img: 'dog-judge.jpg',   text: 'Die Enttäuschung ist real 💀' },
-    { img: 'cat-creepy.jpg',  text: 'Komm schon... ich warte 👀' },
-    { img: 'dog-sideeye.jpg', text: 'Interessante Lebensentscheidung 🤨' },
-    { img: 'cat-cool.jpg',    text: 'Ich bin nicht sauer. Schon. 😎' },
-    { img: 'cat-swag.jpg',    text: 'Okay king, wie du meinst 💅' },
+    { img: 'cat-sus.jpg',              text: 'Bro was?! 😐' },
+    { img: 'dog-sideeye.jpg',          text: 'Alter, WIRKLICH?? 😒' },
+    { img: 'cat-creepy.jpg',           text: 'Ich beobachte dich. 👀' },
+    { img: 'dog-judge.jpg',            text: 'Du machst Witze, oder? 🙄' },
+    { img: 'cat-cool.jpg',             text: 'Finde ich auch nicht cool, nein zu sagen' },
+    { img: 'cat-swag.jpg',             text: 'Hab ich nicht gefragt. 💅' },
+    { img: 'anim-unacceptable.webp',   text: 'UNACCEPTABLE!! 😤' },
+    { img: 'dog-judge.jpg',            text: 'Die Enttäuschung ist real 💀' },
+    { img: 'anim-dog-shocked.webp',    text: 'Ich bin schockiert 😱' },
+    { img: 'dog-sideeye.jpg',          text: 'Interessante Lebensentscheidung 🤨' },
+    { img: 'anim-monkey-sus.webp',     text: 'Alter...' },
+    { img: 'cat-swag.jpg',             text: 'Okay king, wie du meinst 💅' },
+    { img: 'anim-dog-surprised.webp',  text: 'Hä?! Wirklich?? 😳' },
+    { img: 'cat-sus.jpg',              text: 'Sus behaviour detected 🚨' },
 ];
 let lastNeinIdx = -1;
 function randomNeinMsg() {
@@ -470,12 +537,14 @@ btnNein.addEventListener('touchstart', e => {
 
 /* ── Abbruch button: funny messages ──────────────────────────────── */
 const ABBRUCH_MSGS = [
-    { img: 'cat-cool.jpg',    text: 'Du traust dich nicht! 😏' },
-    { img: 'dog-sideeye.jpg', text: 'Riiight... 😒' },
-    { img: 'cat-swag.jpg',    text: 'Der Knopf ist dekorativ. 💅' },
-    { img: 'cat-creepy.jpg',  text: 'Kein Ausweg. 👀' },
-    { img: 'cat-sus.jpg',     text: 'Nice try. 😐' },
-    { img: 'dog-judge.jpg',   text: 'Ich urteile dich. 🙄' },
+    { img: 'cat-cool.jpg',             text: 'Du traust dich nicht! 😏' },
+    { img: 'dog-sideeye.jpg',          text: 'Riiight... 😒' },
+    { img: 'anim-unacceptable.webp',   text: 'UNACCEPTABLE!! 😤' },
+    { img: 'cat-swag.jpg',             text: 'Der Knopf ist dekorativ. 💅' },
+    { img: 'anim-dog-surprised.webp',  text: 'Wie war das nochmal?! 😳' },
+    { img: 'cat-sus.jpg',              text: 'Nice try. 😐' },
+    { img: 'anim-monkey-sus.webp',     text: 'Nope. 🐒' },
+    { img: 'dog-judge.jpg',            text: 'Ich verurteile dich. 🙄' },
 ];
 let lastAbbruchIdx = -1;
 window.abbruch = function() {
@@ -506,6 +575,7 @@ overlay.addEventListener('click', e => { if (e.target === overlay) closeOverlay(
 /* ── Step 1 — choose activity ────────────────────────────────────── */
 document.getElementById('btnJa').addEventListener('click', e => {
     showFloatMsg(e.clientX, e.clientY, { img: 'cat-happy.jpg', text: 'Yesss!! 🎉' });
+    launchConfetti(70);
     setContent(`
         <h2 class="modal-title">Ist das dein Ernst?<br>Okay, super! Was wollen wir machen?</h2>
         <button class="option-btn" onclick="pickActivity('dinner','Klassisches Dinner Date 🍝')">Klassisches Dinner Date 🍝</button>
@@ -528,6 +598,7 @@ let currentLabel = '';
 
 window.pickActivity = function(key, label) {
     currentLabel = label;
+    launchConfetti(50);
     setContent(`
         <div class="verdict-box">${VERDICTS[key]}</div>
         <p class="when-label">Wann hast du Zeit?</p>
@@ -576,7 +647,7 @@ window.fixDate = function() {
         <span class="email-note">📬 Eine Bestätigung wurde verschickt!</span>
     `);
 
-    launchConfetti();
+    launchConfetti(220);
     sendEmail(currentLabel, formatted);
 };
 
@@ -600,10 +671,10 @@ async function sendEmail(activityLabel, formatted) {
 }
 
 /* ── Confetti ────────────────────────────────────────────────────── */
-function launchConfetti() {
+function launchConfetti(count = 130) {
     const wrap   = document.getElementById('confettiWrap');
     const colors = ['#f06292','#ad1457','#ffd700','#ff85a1','#ffffff','#ff4081','#e91e63','#ffc0cb','#ffb7c5'];
-    for (let i = 0; i < 130; i++) {
+    for (let i = 0; i < count; i++) {
         setTimeout(() => {
             const p   = document.createElement('div');
             const sz  = (Math.random() * 12 + 5).toFixed(1);
