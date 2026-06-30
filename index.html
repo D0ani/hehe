@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Willst du mit mir auf ein Date? 💕</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, #fff0f4 0%, #ffdde6 45%, #ffccd9 100%);
+            font-family: 'Nunito', 'Segoe UI', sans-serif;
+            overflow: hidden;
+        }
+
+        /* ── floating hearts ──────────────────────────────────────────────────── */
+        .heart-bg {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.13;
+            animation: floatUp linear infinite;
+        }
+        @keyframes floatUp {
+            from { transform: translateY(110vh) rotate(-8deg); }
+            to   { transform: translateY(-130px) rotate(8deg); }
+        }
+
+        /* ── start screen ─────────────────────────────────────────────────────── */
+        .start-screen {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 2rem;
+            animation: fadeInUp 0.8s ease both;
+        }
+        .question {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(1.65rem, 4.8vw, 2.9rem);
+            color: #a3203a;
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+            text-shadow: 0 2px 8px rgba(163, 32, 58, 0.12);
+        }
+        .tagline {
+            font-size: 1rem;
+            color: #c8849a;
+            margin-bottom: 2.6rem;
+            font-style: italic;
+            font-weight: 300;
+        }
+
+        /* ── button row ───────────────────────────────────────────────────────── */
+        .btn-row {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ── buttons ──────────────────────────────────────────────────────────── */
+        .btn {
+            display: inline-block;
+            padding: 0.88rem 2.3rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.06rem;
+            font-family: 'Nunito', 'Segoe UI', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            letter-spacing: 0.2px;
+        }
+        .btn-ja {
+            background: linear-gradient(135deg, #f06292 0%, #ad1457 100%);
+            color: #fff;
+            box-shadow: 0 7px 24px rgba(173, 20, 87, 0.38);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-ja:hover  { transform: translateY(-3px) scale(1.04); box-shadow: 0 12px 30px rgba(173, 20, 87, 0.46); }
+        .btn-ja:active { transform: translateY(-1px) scale(1.01); }
+
+        .btn-nein {
+            background: linear-gradient(135deg, #f8d0da 0%, #e8aabb 100%);
+            color: #9b4060;
+            box-shadow: 0 4px 14px rgba(180, 110, 140, 0.25);
+        }
+        .btn-nein.is-fixed {
+            position: fixed;
+            margin: 0;
+            z-index: 10;
+        }
+        .btn-nein.dodging {
+            transition: left 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        top  0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* ── image reaction popup ─────────────────────────────────────────────── */
+        .float-msg {
+            position: fixed;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 8px 30px rgba(163, 32, 58, 0.30);
+            pointer-events: none;
+            z-index: 9999;
+            width: 190px;
+            overflow: hidden;
+            transform: translateX(-50%);
+            animation: floatMsg 2.8s ease forwards;
+        }
+        .float-msg img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+        }
+        .float-msg .float-label {
+            padding: 0.55rem 0.9rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #a3203a;
+            line-height: 1.35;
+            text-align: center;
+        }
+        @keyframes floatMsg {
+            0%   { opacity: 0; transform: translateX(-50%) translateY(14px) scale(0.7);  }
+            10%  { opacity: 1; transform: translateX(-50%) translateY(0)    scale(1.05); }
+            15%  { transform: translateX(-50%) translateY(0) scale(1); }
+            75%  { opacity: 1; transform: translateX(-50%) translateY(-12px) scale(1);   }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-26px) scale(0.9); }
+        }
+
+        /* ── overlay & modal ──────────────────────────────────────────────────── */
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(65, 8, 22, 0.42);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+        }
+        .overlay.open { display: flex; animation: fadeIn 0.26s ease; }
+
+        .modal {
+            background: #fff;
+            border-radius: 24px;
+            padding: 2.5rem 2.1rem 2.1rem;
+            max-width: 430px;
+            width: calc(100% - 2rem);
+            text-align: center;
+            box-shadow: 0 24px 60px rgba(65, 8, 22, 0.24);
+            position: relative;
+            overflow: hidden;
+        }
+        .modal::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #f06292, #ad1457, #f06292);
+            background-size: 200% auto;
+            animation: shimmer 2.6s linear infinite;
+        }
+        .modal-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.24rem;
+            color: #a3203a;
+            line-height: 1.55;
+            margin-bottom: 1.75rem;
+        }
+
+        /* ── option buttons ───────────────────────────────────────────────────── */
+        .option-btn {
+            display: block;
+            width: 100%;
+            padding: 0.84rem 1.2rem;
+            margin-bottom: 0.65rem;
+            border: 2px solid #f4b8c8;
+            border-radius: 50px;
+            background: #fff;
+            color: #ad1457;
+            font-size: 0.97rem;
+            font-family: 'Nunito', 'Segoe UI', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.22s ease;
+        }
+        .option-btn:last-of-type { margin-bottom: 0; }
+        .option-btn:hover {
+            background: linear-gradient(135deg, #f06292, #ad1457);
+            color: #fff;
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(173, 20, 87, 0.28);
+        }
+
+        /* ── abbruch button ───────────────────────────────────────────────────── */
+        .btn-abbruch {
+            background: none;
+            border: 2px dashed #f0c0cc;
+            color: #c8a0b0;
+            padding: 0.62rem 1.8rem;
+            border-radius: 50px;
+            font-size: 0.88rem;
+            font-family: 'Nunito', 'Segoe UI', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.9rem;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+        .btn-abbruch:hover { background: #fff5f7; border-color: #e8a0b0; color: #b06080; }
+
+        /* ── step 2: verdict + datetime ───────────────────────────────────────── */
+        .verdict-box {
+            background: linear-gradient(135deg, #fff5f8, #ffe8ee);
+            border-radius: 14px;
+            padding: 0.95rem 1.2rem;
+            margin-bottom: 1.3rem;
+            font-style: italic;
+            color: #b06080;
+            font-size: 1rem;
+            line-height: 1.55;
+            border-left: 3px solid #f06292;
+        }
+        .when-label {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.14rem;
+            color: #a3203a;
+            margin-bottom: 0.9rem;
+        }
+        .datetime-row {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 1.3rem;
+        }
+        .dt-group { flex: 1; text-align: left; }
+        .dt-label {
+            display: block;
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: #c8849a;
+            margin-bottom: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+        .date-input {
+            width: 100%;
+            padding: 0.72rem 0.8rem;
+            border: 2px solid #f4b8c8;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-family: 'Nunito', 'Segoe UI', sans-serif;
+            color: #ad1457;
+            background: #fffafa;
+            outline: none;
+            display: block;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .date-input:focus {
+            border-color: #ad1457;
+            box-shadow: 0 0 0 3px rgba(173, 20, 87, 0.1);
+        }
+        .date-input.error {
+            border-color: #e53935;
+            box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.12);
+            animation: shake 0.36s ease;
+        }
+        .btn-fix {
+            background: linear-gradient(135deg, #f06292 0%, #ad1457 100%);
+            color: #fff;
+            border: none;
+            padding: 0.88rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1.06rem;
+            font-family: 'Nunito', 'Segoe UI', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 7px 22px rgba(173, 20, 87, 0.36);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn-fix:hover  { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(173, 20, 87, 0.46); }
+        .btn-fix:active { transform: translateY(-1px); }
+
+        /* ── final screen ─────────────────────────────────────────────────────── */
+        .final-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.42rem;
+            color: #a3203a;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        .final-date-wrap {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 0.8rem;
+        }
+        .final-gif-over {
+            width: 105px;
+            border-radius: 12px;
+            display: block;
+            margin: 0 auto -22px;
+            position: relative;
+            z-index: 2;
+            filter: drop-shadow(0 4px 10px rgba(163,32,58,0.25));
+            animation: gifBounceIn 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+        }
+        @keyframes gifBounceIn {
+            0%   { opacity: 0; transform: scale(0.2) translateY(30px); }
+            65%  { transform: scale(1.1) translateY(-4px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .final-date-box {
+            display: block;
+            background: linear-gradient(135deg, #fff5f8, #ffe0e8);
+            border-radius: 14px;
+            padding: 1.4rem 1.5rem 0.85rem;
+            font-size: 0.9rem;
+            color: #c06080;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+        .email-note {
+            display: block;
+            font-size: 0.82rem;
+            color: #d4a0b4;
+            font-style: italic;
+            margin-top: 0.6rem;
+        }
+
+        /* ── confetti ─────────────────────────────────────────────────────────── */
+        .confetti-wrap { position: fixed; inset: 0; pointer-events: none; z-index: 1000; }
+        @keyframes confettiFall {
+            0%   { transform: translateY(0)     rotate(0deg)   scaleX(1);   opacity: 1; }
+            85%  { opacity: 1; }
+            100% { transform: translateY(110vh) rotate(820deg) scaleX(0.7); opacity: 0; }
+        }
+
+        /* ── animations ───────────────────────────────────────────────────────── */
+        @keyframes fadeIn   { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp  { from { opacity: 0; transform: translateY(38px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes shake    { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+        @keyframes shimmer  { to { background-position: 200% center; } }
+    </style>
+</head>
+<body>
+
+<main class="start-screen">
+    <h1 class="question">Willst du mit mir auf ein Date? 💕</h1>
+    <p class="tagline">Überleg nicht zu lange…</p>
+    <div class="btn-row" id="btnRow">
+        <button class="btn btn-ja" id="btnJa">Ja 💖</button>
+        <button class="btn btn-nein" id="btnNein">Nein</button>
+    </div>
+</main>
+
+<div class="overlay" id="overlay">
+    <div class="modal" id="modal"></div>
+</div>
+
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<script>
+/* ── Floating hearts ─────────────────────────────────────────────── */
+const HEARTS = ['❤️','💕','💖','💗','💓','💝','🌸','✨'];
+for (let i = 0; i < 16; i++) {
+    const el = document.createElement('div');
+    el.className = 'heart-bg';
+    el.textContent = HEARTS[i % HEARTS.length];
+    el.style.cssText =
+        `left:${(Math.random()*100).toFixed(1)}vw;` +
+        `font-size:${(Math.random()*1.4+0.9).toFixed(2)}rem;` +
+        `animation-duration:${(Math.random()*13+9).toFixed(1)}s;` +
+        `animation-delay:${(-Math.random()*22).toFixed(1)}s;`;
+    document.body.appendChild(el);
+}
+
+/* ── Image reaction popup ─────────────────────────────────────────── */
+function showFloatMsg(x, y, msg) {
+    const el = document.createElement('div');
+    el.className = 'float-msg';
+    el.innerHTML =
+        `<img src="images/${msg.img}" alt="">` +
+        `<div class="float-label">${msg.text}</div>`;
+    el.style.left = `${Math.max(80, Math.min(x, window.innerWidth - 80))}px`;
+    el.style.top  = `${Math.max(30, y - 130)}px`;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 2800);
+}
+
+/* ── Nein button: funny messages ─────────────────────────────────── */
+const NEIN_MSGS = [
+    { img: 'cat-sus.jpg',     text: 'Bro was?! 😐' },
+    { img: 'dog-sideeye.jpg', text: 'Alter, WIRKLICH?? 😒' },
+    { img: 'cat-creepy.jpg',  text: 'Ich beobachte dich. 👀' },
+    { img: 'dog-judge.jpg',   text: 'Du machst Witze, oder? 🙄' },
+    { img: 'cat-cool.jpg',    text: 'Finde ich auch cool, nein zu sagen 😎' },
+    { img: 'cat-swag.jpg',    text: 'Hab ich nicht gefragt. 💅' },
+    { img: 'cat-sus.jpg',     text: 'Sus behaviour detected 🚨' },
+    { img: 'dog-judge.jpg',   text: 'Die Enttäuschung ist real 💀' },
+    { img: 'cat-creepy.jpg',  text: 'Komm schon... ich warte 👀' },
+    { img: 'dog-sideeye.jpg', text: 'Interessante Lebensentscheidung 🤨' },
+    { img: 'cat-cool.jpg',    text: 'Ich bin nicht sauer. Schon. 😎' },
+    { img: 'cat-swag.jpg',    text: 'Okay king, wie du meinst 💅' },
+];
+let lastNeinIdx = -1;
+function randomNeinMsg() {
+    let idx;
+    do { idx = Math.floor(Math.random() * NEIN_MSGS.length); } while (idx === lastNeinIdx);
+    lastNeinIdx = idx;
+    return NEIN_MSGS[idx];
+}
+
+/* ── Nein-button dodge logic ──────────────────────────────────────── */
+const btnNein = document.getElementById('btnNein');
+let isFixed = false;
+
+function makeFixed() {
+    if (isFixed) return;
+    isFixed = true;
+    const rect = btnNein.getBoundingClientRect();
+    const sp = document.createElement('div');
+    sp.style.cssText = `width:${rect.width}px;height:${rect.height}px;flex-shrink:0;pointer-events:none;`;
+    btnNein.parentNode.insertBefore(sp, btnNein);
+    document.body.appendChild(btnNein);
+    btnNein.classList.add('is-fixed');
+    btnNein.style.left = `${rect.left}px`;
+    btnNein.style.top  = `${rect.top}px`;
+}
+
+function dodge() {
+    const margin = 20;
+    const bw = btnNein.offsetWidth  || 100;
+    const bh = btnNein.offsetHeight || 44;
+    btnNein.style.left = `${Math.max(margin, Math.random() * (window.innerWidth  - bw - margin))}px`;
+    btnNein.style.top  = `${Math.max(margin, Math.random() * (window.innerHeight - bh - margin))}px`;
+}
+
+function handleNein(msgX, msgY) {
+    const wasFixed = isFixed;
+    makeFixed();
+    if (!wasFixed) {
+        dodge();
+        requestAnimationFrame(() => btnNein.classList.add('dodging'));
+    } else {
+        dodge();
+    }
+    showFloatMsg(msgX, msgY, randomNeinMsg());
+}
+
+btnNein.addEventListener('mouseover', e => handleNein(e.clientX, e.clientY));
+btnNein.addEventListener('touchstart', e => {
+    e.preventDefault();
+    const t = e.touches[0];
+    handleNein(t.clientX, t.clientY);
+}, { passive: false });
+
+/* ── Abbruch button: funny messages ──────────────────────────────── */
+const ABBRUCH_MSGS = [
+    { img: 'cat-cool.jpg',    text: 'Du traust dich nicht! 😏' },
+    { img: 'dog-sideeye.jpg', text: 'Riiight... 😒' },
+    { img: 'cat-swag.jpg',    text: 'Der Knopf ist dekorativ. 💅' },
+    { img: 'cat-creepy.jpg',  text: 'Kein Ausweg. 👀' },
+    { img: 'cat-sus.jpg',     text: 'Nice try. 😐' },
+    { img: 'dog-judge.jpg',   text: 'Ich urteile dich. 🙄' },
+];
+let lastAbbruchIdx = -1;
+window.abbruch = function() {
+    let idx;
+    do { idx = Math.floor(Math.random() * ABBRUCH_MSGS.length); } while (idx === lastAbbruchIdx);
+    lastAbbruchIdx = idx;
+    const btn  = document.getElementById('btnAbbruch');
+    const rect = btn.getBoundingClientRect();
+    showFloatMsg(rect.left + rect.width / 2, rect.top + rect.height / 2, ABBRUCH_MSGS[idx]);
+};
+
+/* ── Modal helpers ───────────────────────────────────────────────── */
+const overlay = document.getElementById('overlay');
+const modal   = document.getElementById('modal');
+
+function openOverlay()  { overlay.classList.add('open'); }
+function closeOverlay() { overlay.classList.remove('open'); }
+
+function setContent(html) {
+    modal.innerHTML       = html;
+    modal.style.animation = 'none';
+    void modal.offsetHeight;
+    modal.style.animation = 'slideUp 0.4s cubic-bezier(0.34, 1.40, 0.64, 1) both';
+}
+
+overlay.addEventListener('click', e => { if (e.target === overlay) closeOverlay(); });
+
+/* ── Step 1 — choose activity ────────────────────────────────────── */
+document.getElementById('btnJa').addEventListener('click', e => {
+    showFloatMsg(e.clientX, e.clientY, { img: 'cat-happy.jpg', text: 'Yesss!! 🎉' });
+    setContent(`
+        <h2 class="modal-title">Ist das dein Ernst?<br>Okay, super! Was wollen wir machen?</h2>
+        <button class="option-btn" onclick="pickActivity('dinner','Klassisches Dinner Date 🍝')">Klassisches Dinner Date 🍝</button>
+        <button class="option-btn" onclick="pickActivity('walk','Entspannter Spaziergang 🚶‍♀️')">Entspannter Spaziergang 🚶‍♀️</button>
+        <button class="option-btn" onclick="pickActivity('coffee','Gemütliches Kaffee Date ☕')">Gemütliches Kaffee Date ☕</button>
+        <br>
+        <button id="btnAbbruch" class="btn-abbruch" onclick="abbruch()">Abbruch 🚫</button>
+    `);
+    openOverlay();
+});
+
+/* ── Step 2 — date & time picker ─────────────────────────────────── */
+const VERDICTS = {
+    dinner: 'Uhh, schick! Ich hoffe du hast großen Hunger. 😏',
+    walk:   'Sehr sportlich! Aber wehe du beschwerst dich über das Wetter. 😄',
+    coffee: 'Gute Wahl! Ich warne dich aber: Nach zwei Kaffee fange ich an zu philosophieren. ☕🤓',
+};
+
+let currentLabel = '';
+
+window.pickActivity = function(key, label) {
+    currentLabel = label;
+    setContent(`
+        <div class="verdict-box">${VERDICTS[key]}</div>
+        <p class="when-label">Wann hast du Zeit?</p>
+        <div class="datetime-row">
+            <div class="dt-group">
+                <label class="dt-label">Datum 📅</label>
+                <input type="date" class="date-input" id="dateInput">
+            </div>
+            <div class="dt-group">
+                <label class="dt-label">Uhrzeit ⏰</label>
+                <input type="time" class="date-input" id="timeInput">
+            </div>
+        </div>
+        <button class="btn-fix" onclick="fixDate()">Date fixieren! 📅</button>
+    `);
+};
+
+/* ── Step 3 — confirmation + email ──────────────────────────────── */
+window.fixDate = function() {
+    const dateInp = document.getElementById('dateInput');
+    const timeInp = document.getElementById('timeInput');
+    let ok = true;
+    [dateInp, timeInp].forEach(inp => {
+        if (!inp.value) {
+            inp.classList.remove('error');
+            void inp.offsetHeight;
+            inp.classList.add('error');
+            setTimeout(() => inp.classList.remove('error'), 500);
+            ok = false;
+        }
+    });
+    if (!ok) return;
+
+    const dt        = new Date(`${dateInp.value}T${timeInp.value}`);
+    const formatted = dt.toLocaleDateString('de-DE', {
+        weekday: 'long', year: 'numeric', month: 'long',
+        day: 'numeric', hour: '2-digit', minute: '2-digit',
+    });
+
+    setContent(`
+        <p class="final-title">Perfekt! Ist notiert.<br>Ich zähle die Tage! ❤️</p>
+        <div class="final-date-wrap">
+            <img src="images/cat-dance.gif" class="final-gif-over" alt="dancing cat">
+            <div class="final-date-box">📅 ${formatted}</div>
+        </div>
+        <span class="email-note">📬 Eine Bestätigung wurde verschickt!</span>
+    `);
+
+    launchConfetti();
+    sendEmail(currentLabel, formatted);
+};
+
+async function sendEmail(activityLabel, formatted) {
+    try {
+        await fetch('https://formsubmit.co/ajax/leinadtom@gmail.com', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                '_subject':  '📅 Date fixiert! 💕',
+                '_captcha':  'false',
+                '_template': 'table',
+                'Aktivität':        activityLabel,
+                'Datum & Uhrzeit':  formatted
+            })
+        });
+    } catch (_) { /* silent fail — user still sees success screen */ }
+}
+
+/* ── Confetti ────────────────────────────────────────────────────── */
+function launchConfetti() {
+    const wrap   = document.getElementById('confettiWrap');
+    const colors = ['#f06292','#ad1457','#ffd700','#ff85a1','#ffffff','#ff4081','#e91e63','#ffc0cb','#ffb7c5'];
+    for (let i = 0; i < 130; i++) {
+        setTimeout(() => {
+            const p   = document.createElement('div');
+            const sz  = (Math.random() * 12 + 5).toFixed(1);
+            const dur = (Math.random() * 2.4 + 1.8).toFixed(2);
+            p.style.cssText =
+                'position:absolute;' +
+                `left:${(Math.random()*100).toFixed(1)}vw;` +
+                'top:-18px;' +
+                `width:${sz}px;height:${sz}px;` +
+                `border-radius:${Math.random()>0.45?'50%':'3px'};` +
+                `background:${colors[Math.floor(Math.random()*colors.length)]};` +
+                `animation:confettiFall ${dur}s linear forwards;`;
+            wrap.appendChild(p);
+            setTimeout(() => p.remove(), (+dur + 0.7) * 1000);
+        }, i * 18);
+    }
+}
+</script>
+</body>
+</html>
