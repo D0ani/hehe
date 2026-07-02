@@ -164,7 +164,9 @@
             text-align: center;
             box-shadow: 0 24px 60px rgba(65, 8, 22, 0.24);
             position: relative;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
+            max-height: calc(100dvh - 2rem);
         }
         .modal::before {
             content: '';
@@ -296,6 +298,61 @@
         .btn-fix:hover  { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(173, 20, 87, 0.46); }
         .btn-fix:active { transform: translateY(-1px); }
 
+        /* ── sliders (dauer + hype) ───────────────────────────────────────────── */
+        .slider-block { margin-bottom: 1.3rem; text-align: left; }
+        .pink-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 6px;
+            background: linear-gradient(90deg, #f8d0da 0%, #f06292 55%, #ad1457 100%);
+            outline: none;
+            cursor: pointer;
+            margin-top: 0.4rem;
+        }
+        .pink-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            background: #fff;
+            border: 3px solid #ad1457;
+            box-shadow: 0 2px 8px rgba(173, 20, 87, 0.4);
+            cursor: pointer;
+        }
+        .pink-slider::-moz-range-thumb {
+            width: 18px; height: 18px;
+            border-radius: 50%;
+            background: #fff;
+            border: 3px solid #ad1457;
+            box-shadow: 0 2px 8px rgba(173, 20, 87, 0.4);
+            cursor: pointer;
+        }
+        .slider-ends {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #c8849a;
+            margin-top: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .slider-value {
+            text-align: center;
+            font-weight: 800;
+            color: #ad1457;
+            font-size: 1.02rem;
+            margin-top: 0.45rem;
+        }
+        .verdict-gif {
+            width: 88px;
+            border-radius: 12px;
+            display: block;
+            margin: 0 auto 0.8rem;
+            filter: drop-shadow(0 4px 10px rgba(163, 32, 58, 0.25));
+        }
+
         /* ── final screen ─────────────────────────────────────────────────────── */
         .final-title {
             font-family: 'Playfair Display', Georgia, serif;
@@ -375,10 +432,13 @@
         .meme-mr { top:    28%;  right: -12px;  width:  84px; transform: rotate( 10deg); animation: memeBob 6.2s ease-in-out infinite 2.2s; }
         .meme-ll { top:    66%;  left:  -14px;  width:  92px; transform: rotate(-7deg);  animation: memeBob 5.1s ease-in-out infinite 2.8s; }
         .meme-rl { top:    60%;  right: -14px;  width:  96px; transform: rotate( 6deg);  animation: memeBob 4.7s ease-in-out infinite 1.4s; }
-        .meme-tc { top:    -16px; left: 50%; margin-left: -46px; width: 90px; transform: rotate(-4deg); animation: memeBob 7s ease-in-out infinite 0.9s; }
         /* love decorations — slightly bigger & more visible */
         .meme-love1 { bottom: 18px; left:  145px; width: 115px; transform: rotate(-5deg); animation: memeBob 4.3s ease-in-out infinite 0.7s; }
         .meme-love2 { bottom: 18px; right: 145px; width: 115px; transform: rotate( 5deg); animation: memeBob 5.3s ease-in-out infinite 1.6s; }
+        /* new spongebob / adventure time decorations */
+        .meme-ul { top: 17%;  left:  -12px; width: 82px; transform: rotate(-9deg); animation: memeBob 5.5s ease-in-out infinite 0.4s; }
+        .meme-ur { top: 44%;  right: -14px; width: 90px; transform: rotate( 8deg); animation: memeBob 4.9s ease-in-out infinite 2.0s; }
+        .meme-bc { bottom: -6px; left: 50%; margin-left: -47px; width: 94px; transform: rotate(3deg); animation: memeBob 4.2s ease-in-out infinite 1.2s; }
 
         @keyframes memeBob {
             0%,100% { translate: 0 0; }
@@ -395,9 +455,38 @@
             .meme-mr    { display: block; width: 64px;  top: 22%;    right: -10px; transform: rotate(10deg);  }
             .meme-ll    { display: block; width: 66px;  top: 63%;    left: -10px;  transform: rotate(-7deg);  }
             .meme-rl    { display: block; width: 68px;  top: 58%;    right: -10px; transform: rotate(6deg);   }
-            .meme-tc    { display: block; width: 74px;  top: -12px;  margin-left: -37px; }
             .meme-love1 { display: block; width: 84px;  bottom: 6px; left: 96px;   transform: rotate(-5deg);  }
             .meme-love2 { display: block; width: 84px;  bottom: 6px; right: 96px;  transform: rotate(5deg);   }
+            .meme-ul    { width: 58px;  top: 15%;    left: -10px;  transform: rotate(-9deg); }
+            .meme-ur    { width: 60px;  top: 42%;    right: -10px; transform: rotate(8deg);  }
+            .meme-bc    { display: none; }
+        }
+
+        /* ── mobile fine-tuning ───────────────────────────────────────────────── */
+        @media (max-width: 520px) {
+            .start-screen { padding: 1.5rem 1rem; }
+            .tagline      { margin-bottom: 2rem; }
+            .btn          { padding: 0.8rem 2rem; font-size: 1rem; }
+
+            .modal        { padding: 1.7rem 1.2rem 1.4rem; border-radius: 18px; }
+            .modal-title  { font-size: 1.05rem; margin-bottom: 1.2rem; }
+            .option-btn   { padding: 0.72rem 1rem; margin-bottom: 0.55rem; font-size: 0.92rem; }
+            .btn-abbruch  { margin-top: 0.7rem; padding: 0.55rem 1.5rem; font-size: 0.82rem; }
+
+            .verdict-gif  { width: 68px; margin-bottom: 0.65rem; }
+            .verdict-box  { font-size: 0.9rem; padding: 0.75rem 0.95rem; margin-bottom: 1rem; }
+            .when-label   { font-size: 1.02rem; margin-bottom: 0.7rem; }
+            .datetime-row { flex-direction: column; gap: 0.7rem; margin-bottom: 1rem; }
+            .slider-block { margin-bottom: 1rem; }
+            .btn-fix      { width: 100%; padding: 0.8rem 1rem; }
+
+            .float-msg    { width: 150px; }
+            .float-msg img { height: 112px; }
+            .float-msg .float-label { font-size: 0.78rem; padding: 0.45rem 0.7rem; }
+
+            .final-title    { font-size: 1.22rem; }
+            .final-date-box { padding: 1.2rem 1.1rem 0.75rem; font-size: 0.85rem; }
+            .final-gif-over { width: 90px; }
         }
 
         /* ── animations ───────────────────────────────────────────────────────── */
@@ -434,9 +523,11 @@
 <img src="images/cat-sus.jpg"         class="deco-meme meme-mr" alt="">
 <img src="images/anim-dog-laptop.webp" class="deco-meme meme-ll" alt="">
 <img src="images/anim-husky-happy.webp" class="deco-meme meme-rl" alt="">
-<img src="images/anim-waiting.webp"      class="deco-meme meme-tc"    alt="">
 <img src="images/anim-cat-loveyou.webp" class="deco-meme meme-love1" alt="">
 <img src="images/anim-dog-teamo.webp"   class="deco-meme meme-love2" alt="">
+<img src="images/at-gunter-dance.gif"   class="deco-meme meme-ul" alt="">
+<img src="images/sb-imagination.gif"    class="deco-meme meme-ur" alt="">
+<img src="images/sb-pants.gif"          class="deco-meme meme-bc" alt="">
 
 <script>
 /* ── Floating hearts ─────────────────────────────────────────────── */
@@ -482,6 +573,9 @@ const NEIN_MSGS = [
     { img: 'cat-swag.jpg',             text: 'Okay king, wie du meinst 💅' },
     { img: 'anim-dog-surprised.webp',  text: 'Hä?! Wirklich?? 😳' },
     { img: 'cat-sus.jpg',              text: 'Sus behaviour detected 🚨' },
+    { img: 'sb-tears.gif',             text: 'Ich hab diese Seite mit meinen Tränen gebaut 😭' },
+    { img: 'sb-crying.gif',            text: 'WARUM tust du mir das an?! 😭' },
+    { img: 'at-dealwithit.gif',        text: '„Nein" gibt\'s hier nicht. Deal with it 😎' },
 ];
 let lastNeinIdx = -1;
 function randomNeinMsg() {
@@ -545,6 +639,8 @@ const ABBRUCH_MSGS = [
     { img: 'cat-sus.jpg',              text: 'Nice try. 😐' },
     { img: 'anim-monkey-sus.webp',     text: 'Nope. 🐒' },
     { img: 'dog-judge.jpg',            text: 'Ich verurteile dich. 🙄' },
+    { img: 'at-dealwithit.gif',        text: 'Deal with it. 😎' },
+    { img: 'sb-tears.gif',             text: 'Willst du mich weinen sehen?! 😭' },
 ];
 let lastAbbruchIdx = -1;
 window.abbruch = function() {
@@ -573,34 +669,108 @@ function setContent(html) {
 overlay.addEventListener('click', e => { if (e.target === overlay) closeOverlay(); });
 
 /* ── Step 1 — choose activity ────────────────────────────────────── */
+const JA_MSGS = [
+    { img: 'cat-happy.jpg',        text: 'Yesss!! 🎉' },
+    { img: 'sb-patrick-hyped.gif', text: 'BESTE Entscheidung!! 🎉' },
+    { img: 'at-finn-hyped.gif',    text: 'LET\'S GOOO!! ✨' },
+    { img: 'sb-happy.gif',         text: 'Ich wusste es! 😁' },
+];
 document.getElementById('btnJa').addEventListener('click', e => {
-    showFloatMsg(e.clientX, e.clientY, { img: 'cat-happy.jpg', text: 'Yesss!! 🎉' });
+    showFloatMsg(e.clientX, e.clientY, JA_MSGS[Math.floor(Math.random() * JA_MSGS.length)]);
     launchConfetti(70);
     setContent(`
         <h2 class="modal-title">Ist das dein Ernst?<br>Okay, super! Was wollen wir machen?</h2>
-        <button class="option-btn" onclick="pickActivity('dinner','Klassisches Dinner Date 🍝')">Klassisches Dinner Date 🍝</button>
-        <button class="option-btn" onclick="pickActivity('walk','Entspannter Spaziergang 🚶‍♀️')">Entspannter Spaziergang 🚶‍♀️</button>
-        <button class="option-btn" onclick="pickActivity('coffee','Gemütliches Kaffee Date ☕')">Gemütliches Kaffee Date ☕</button>
+        <button class="option-btn" onclick="pickActivity('essen', event)">Essen gehen 🍽️</button>
+        <button class="option-btn" onclick="pickActivity('walk', event)">Entspannter Spaziergang 🚶‍♀️</button>
+        <button class="option-btn" onclick="pickActivity('coffee', event)">Gemütliches Kaffee Date ☕</button>
+        <button class="option-btn" onclick="pickActivity('wandern', event)">Wanderung 🥾</button>
+        <button class="option-btn" onclick="pickActivity('rad', event)">Radtour 🚴</button>
+        <button class="option-btn" onclick="pickActivity('picknick', event)">Picknick im Park 🧺</button>
         <br>
         <button id="btnAbbruch" class="btn-abbruch" onclick="abbruch()">Abbruch 🚫</button>
     `);
     openOverlay();
 });
 
-/* ── Step 2 — date & time picker ─────────────────────────────────── */
-const VERDICTS = {
-    dinner: 'Uhh, schick! Ich hoffe du hast großen Hunger. 😏',
-    walk:   'Sehr sportlich! Aber wehe du beschwerst dich über das Wetter. 😄',
-    coffee: 'Gute Wahl! Ich warne dich aber: Nach zwei Kaffee fange ich an zu philosophieren. ☕🤓',
+/* ── Step 1b/2 — activities, food choice, date & time picker ─────── */
+const ACTIVITIES = {
+    essen:    { label: 'Essen gehen 🍽️', boring: true },
+    walk:     { label: 'Entspannter Spaziergang 🚶‍♀️', gif: 'anim-husky-happy.webp', boring: true,
+                verdict: 'Sehr sportlich! Aber wehe du beschwerst dich über das Wetter. 😄' },
+    coffee:   { label: 'Gemütliches Kaffee Date ☕', gif: 'anim-cat-cute.webp', boring: true,
+                verdict: 'Gute Wahl! Ich warne dich aber: Nach zwei Kaffee fange ich an zu philosophieren. ☕🤓' },
+    wandern:  { label: 'Wanderung 🥾', gif: 'at-finn-hyped.gif',
+                verdict: 'Wandern! Ich pack die Snacks ein — dafür trägst du den Rucksack. 🥾😄',
+                durationQ: 'Wie lange soll die Wanderung gehen?' },
+    rad:      { label: 'Radtour 🚴', gif: 'at-gunter-dance.gif',
+                verdict: 'Radtour! Wer als Letztes oben am Berg ankommt, zahlt das Eis. 🚴💨',
+                durationQ: 'Wie lange soll die Radtour gehen?' },
+    picknick: { label: 'Picknick im Park 🧺', gif: 'sb-patrick-hyped.gif',
+                verdict: 'Picknick! Ich bring Decke und Snacks mit — du musst nur auftauchen. 🧺😌' },
 };
 
-let currentLabel = '';
+const FOODS = {
+    italienisch:  { label: 'Italienisch 🍝', verdict: 'Mamma mia, exzellente Wahl! Pasta ist immer die Antwort. 🍝' },
+    hawaiianisch: { label: 'Hawaiianisch 🍍', verdict: 'Aloha! 🍍 Und ja, Ananas aufs Essen ist völlig legitim. Fight me.' },
+    asiatisch:    { label: 'Asiatisch 🍜', verdict: 'Sehr gut! Kleine Warnung: Meine Stäbchen-Skills sind... kreativ. 🥢' },
+    burger:       { label: 'Burger 🍔', verdict: 'Ein Mensch mit Geschmack! Extra Käse ist Pflicht, oder? 🍔' },
+};
 
-window.pickActivity = function(key, label) {
-    currentLabel = label;
+const HYPE_LEVELS = ['meh 😐', 'ganz okay 🙂', 'klingt nice 😄', 'hyped 🤩', 'mega hyped 🔥', 'ULTRA PRO MAX 🚀💥'];
+
+let currentActivity = null;
+let currentFood     = '';
+
+const BORING_TEXTS = [
+    'Boooring… 🥱',
+    'Wow. Wie originell. 🥱',
+    'Sehr klassisch. SEHR klassisch. 🥱',
+    'Gääähn… aber okay, du Klassiker. 🥱',
+];
+
+window.pickActivity = function(key, ev) {
+    currentActivity = ACTIVITIES[key];
+    currentFood     = '';
+    if (currentActivity.boring && ev) {
+        showFloatMsg(ev.clientX, ev.clientY, {
+            img:  'anim-boring.webp',
+            text: BORING_TEXTS[Math.floor(Math.random() * BORING_TEXTS.length)],
+        });
+    }
+    if (key === 'essen') {
+        setContent(`
+            <h2 class="modal-title">Sehr gut! 😋<br>Und worauf hast du Hunger?</h2>
+            <button class="option-btn" onclick="pickFood('italienisch')">Italienisch 🍝</button>
+            <button class="option-btn" onclick="pickFood('hawaiianisch')">Hawaiianisch 🍍</button>
+            <button class="option-btn" onclick="pickFood('asiatisch')">Asiatisch 🍜</button>
+            <button class="option-btn" onclick="pickFood('burger')">Burger 🍔</button>
+            <br>
+            <button id="btnAbbruch" class="btn-abbruch" onclick="abbruch()">Abbruch 🚫</button>
+        `);
+        return;
+    }
     launchConfetti(50);
+    showSchedule(currentActivity.verdict, currentActivity.gif, currentActivity.durationQ);
+};
+
+window.pickFood = function(key) {
+    const food  = FOODS[key];
+    currentFood = food.label;
+    launchConfetti(50);
+    showSchedule(food.verdict, 'sb-excited.gif', null);
+};
+
+function showSchedule(verdict, gif, durationQ) {
+    const durationHtml = durationQ ? `
+        <div class="slider-block">
+            <span class="dt-label">${durationQ} ⏱️</span>
+            <input type="range" class="pink-slider" id="durSlider" min="1" max="8" step="0.5" value="2" oninput="updateDur(this.value)">
+            <div class="slider-ends"><span>1 Std.</span><span>8 Std.</span></div>
+            <div class="slider-value" id="durValue">2 Std.</div>
+        </div>` : '';
     setContent(`
-        <div class="verdict-box">${VERDICTS[key]}</div>
+        <img src="images/${gif}" class="verdict-gif" alt="">
+        <div class="verdict-box">${verdict}</div>
         <p class="when-label">Wann hast du Zeit?</p>
         <div class="datetime-row">
             <div class="dt-group">
@@ -612,8 +782,24 @@ window.pickActivity = function(key, label) {
                 <input type="time" class="date-input" id="timeInput">
             </div>
         </div>
+        ${durationHtml}
+        <div class="slider-block">
+            <span class="dt-label">Und wie gehyped bist du? 🔥</span>
+            <input type="range" class="pink-slider" id="hypeSlider" min="0" max="5" step="1" value="3" oninput="updateHype(this.value)">
+            <div class="slider-ends"><span>meh</span><span>Ultra Pro Max</span></div>
+            <div class="slider-value" id="hypeValue">${HYPE_LEVELS[3]}</div>
+        </div>
         <button class="btn-fix" onclick="fixDate()">Date fixieren! 📅</button>
     `);
+}
+
+window.updateDur = function(v) {
+    document.getElementById('durValue').textContent = `${String(v).replace('.', ',')} Std.`;
+};
+
+window.updateHype = function(v) {
+    document.getElementById('hypeValue').textContent = HYPE_LEVELS[v];
+    if (+v === 5) launchConfetti(24);
 };
 
 /* ── Step 3 — confirmation + email ──────────────────────────────── */
@@ -638,20 +824,41 @@ window.fixDate = function() {
         day: 'numeric', hour: '2-digit', minute: '2-digit',
     });
 
+    const durSlider  = document.getElementById('durSlider');
+    const duration   = durSlider ? `${String(durSlider.value).replace('.', ',')} Std.` : '';
+    const hype       = HYPE_LEVELS[document.getElementById('hypeSlider').value];
+    const FINAL_GIFS = ['cat-dance.gif', 'sb-dance.gif'];
+    const finalGif   = FINAL_GIFS[Math.floor(Math.random() * FINAL_GIFS.length)];
+
     setContent(`
         <p class="final-title">Perfekt! Ist notiert.<br>Ich zähle die Tage! ❤️</p>
         <div class="final-date-wrap">
-            <img src="images/cat-dance.gif" class="final-gif-over" alt="dancing cat">
-            <div class="final-date-box">📅 ${formatted}</div>
+            <img src="images/${finalGif}" class="final-gif-over" alt="happy dance">
+            <div class="final-date-box">
+                📅 ${formatted}
+                ${currentFood ? `<br>🍽️ ${currentFood}` : ''}
+                ${duration ? `<br>⏱️ Dauer: ${duration}` : ''}
+                <br>🔥 Hype-Level: ${hype}
+            </div>
         </div>
         <span class="email-note">📬 Eine Bestätigung wurde verschickt!</span>
     `);
 
     launchConfetti(220);
-    sendEmail(currentLabel, formatted);
+    sendEmail(formatted, duration, hype);
 };
 
-async function sendEmail(activityLabel, formatted) {
+async function sendEmail(formatted, duration, hype) {
+    const fields = {
+        '_subject':  '📅 Date fixiert! 💕',
+        '_captcha':  'false',
+        '_template': 'table',
+        'Aktivität':        currentActivity.label,
+        'Datum & Uhrzeit':  formatted,
+        'Hype-Level':       hype,
+    };
+    if (currentFood) fields['Essensrichtung'] = currentFood;
+    if (duration)    fields['Dauer']          = duration;
     try {
         await fetch('https://formsubmit.co/ajax/leinadtom@gmail.com', {
             method: 'POST',
@@ -659,13 +866,7 @@ async function sendEmail(activityLabel, formatted) {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({
-                '_subject':  '📅 Date fixiert! 💕',
-                '_captcha':  'false',
-                '_template': 'table',
-                'Aktivität':        activityLabel,
-                'Datum & Uhrzeit':  formatted
-            })
+            body: JSON.stringify(fields)
         });
     } catch (_) { /* silent fail — user still sees success screen */ }
 }
