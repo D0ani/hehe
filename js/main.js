@@ -8,6 +8,6 @@ const app = new DateFlowApp({
     modal:    new Modal(document.getElementById('overlay'), document.getElementById('modal')),
     popup:    new ReactionPopup({ imagePath: AppConfig.IMAGE_PATH }),
     confetti: new Confetti(document.getElementById('confettiWrap'), AppConfig.CONFETTI_COLORS, AppConfig.IMAGE_PATH, AppConfig.CONFETTI_SPRINKLE),
-    email:    new EmailService(AppConfig.EMAIL_ENDPOINT),
+    email:    new EmailService(AppConfig.EMAIL_ENDPOINT, AppConfig.EMAIL_SUBJECT),
 });
 app.init();

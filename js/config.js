@@ -4,11 +4,16 @@
 const AppConfig = Object.freeze({
     IMAGE_PATH:     'images/',
     EMAIL_ENDPOINT: 'https://formsubmit.co/ajax/leinadtom@gmail.com',
+    EMAIL_SUBJECT:  '📅 Date fixiert! Möge die Macht mit uns sein 💕',
+
+    /* Abschlusszeile auf dem Bestätigungsbildschirm */
+    FORCE_LINE: 'Möge die Macht mit uns sein ✨',
 
     HEART_COUNT: 26,
     HEARTS: ['❤️', '💕', '💖', '💗', '💓', '💝', '🌸', '✨'],
 
-    CONFETTI_COLORS: ['#f06292', '#ad1457', '#ffd700', '#ff85a1', '#ffffff', '#ff4081', '#e91e63', '#ffc0cb', '#ffb7c5'],
+    /* die letzten beiden: Lichtschwert-Grün und -Blau 🗡️ */
+    CONFETTI_COLORS: ['#f06292', '#ad1457', '#ffd700', '#ff85a1', '#ffffff', '#ff4081', '#e91e63', '#ffc0cb', '#ffb7c5', '#7ed957', '#4fc3f7'],
 
     /* wird bei JEDEM Konfetti-Schuss mit eingestreut (Bilder oder Emojis) */
     CONFETTI_SPRINKLE: ['sw-babyyoda-cute.png'],
@@ -16,7 +21,7 @@ const AppConfig = Object.freeze({
     HYPE_LEVELS: ['meh 😐', 'ganz okay 🙂', 'klingt nice 😄', 'hyped 🤩', 'mega hyped 🔥', 'MAUSIG ULTRA PRO MAX 🚀💥'],
     HYPE_DEFAULT: 3,
 
-    FINAL_GIFS: ['cat-dance.gif', 'sb-dance.gif'],
+    FINAL_GIFS: ['cat-dance.gif', 'sb-dance.gif', 'sw-hansolo-iknow.gif'],
     FOOD_GIF:   'sb-excited.gif',
     BORING_IMG: 'anim-boring.webp',
 
@@ -88,17 +93,18 @@ const AppConfig = Object.freeze({
 
     /* boring: true    → Gähn-Popup beim Anklicken
        durationQ       → zeigt zusätzlich den Dauer-Slider
-       du: true        → gestrichelter „Entscheide du"-Style */
+       du: true        → gestrichelter „Entscheide du"-Style
+       gif             → einzelner Dateiname oder Liste (dann wird zufällig gewählt) */
     ACTIVITIES: {
         essen:    { label: 'Essen gehen 🍽️', boring: true },
         walk:     { label: 'Entspannter Spaziergang 🚶‍♀️', gif: 'anim-husky-happy.webp', boring: true,
                     verdict: 'Sehr sportlich! Aber wehe du beschwerst dich über das Wetter. 😄' },
-        coffee:   { label: 'Gemütliches Kaffee Date ☕', gif: 'sw-leia-hope.gif', boring: true,
+        coffee:   { label: 'Gemütliches Kaffee Date ☕', gif: ['sw-leia-hope.gif', 'sw-grogu-soup.gif'], boring: true,
                     verdict: 'Gute Wahl! Lecker Käffchen und hoffentlich muss ich mich nicht entleeren. ☕🤓' },
-        wandern:  { label: 'Wanderung 🥾', gif: 'at-finn-hyped.gif',
+        wandern:  { label: 'Wanderung 🥾', gif: 'sw-chewbacca-dance.gif',
                     verdict: 'Wandern! Sei gewarnt. Es könnte schief gehen. 🥾😄',
                     durationQ: 'Wie lange soll die Wanderung gehen?' },
-        rad:      { label: 'Radtour 🚴', gif: 'at-gunter-dance.gif',
+        rad:      { label: 'Radtour 🚴', gif: 'sw-bb8-roll.gif',
                     verdict: 'Radtour! Wer als Letztes oben am Berg ankommt, zahlt das Eis. 🚴💨',
                     durationQ: 'Wie lange soll die Radtour gehen?' },
         picknick: { label: 'Picknick im Park 🧺', gif: 'sb-patrick-hyped.gif',

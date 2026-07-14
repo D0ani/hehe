@@ -124,6 +124,8 @@ class DateFlowApp {
     /* ── Schritt 2: Termin, Dauer & Hype ────────────────────────────── */
 
     #showScheduleStep(verdict, gif, durationQ) {
+        /* gif darf auch eine Liste sein — dann wird zufällig eins gezogen */
+        const gifFile = Array.isArray(gif) ? gif[Math.floor(Math.random() * gif.length)] : gif;
         const durationHtml = durationQ ? `
             <div class="slider-block">
                 <span class="dt-label">${durationQ} ⏱️</span>
@@ -132,7 +134,7 @@ class DateFlowApp {
                 <div class="slider-value" id="durValue">2 Std.</div>
             </div>` : '';
         this.#modal.setContent(`
-            <img src="${AppConfig.IMAGE_PATH}${gif}" class="verdict-gif" alt="">
+            <img src="${AppConfig.IMAGE_PATH}${gifFile}" class="verdict-gif" alt="">
             <div class="verdict-box">${verdict}</div>
             <p class="when-label">Wann hast du Zeit?</p>
             <div class="datetime-row">
@@ -247,6 +249,7 @@ class DateFlowApp {
                 </div>
             </div>
             <div class="countdown-line">${this.#countdownText(dateObj)}</div>
+            <div class="force-line">${AppConfig.FORCE_LINE}</div>
             <span class="email-note">📬 Eine Bestätigung wurde verschickt!</span>
         `);
     }

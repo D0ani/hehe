@@ -1,14 +1,16 @@
 /* Schickt die Date-Bestätigung per formsubmit.co. */
 class EmailService {
     #endpoint;
+    #subject;
 
-    constructor(endpoint) {
+    constructor(endpoint, subject = '📅 Date fixiert! 💕') {
         this.#endpoint = endpoint;
+        this.#subject  = subject;
     }
 
     async sendConfirmation({ activity, dateTime, food, duration, hype }) {
         const fields = {
-            '_subject':  '📅 Date fixiert! 💕',
+            '_subject':  this.#subject,
             '_captcha':  'false',
             '_template': 'table',
             'Aktivität':       activity,

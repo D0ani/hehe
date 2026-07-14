@@ -409,6 +409,13 @@ body {
     font-size: 1rem;
     margin-top: 0.5rem;
 }
+.force-line {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    color: #b06080;
+    font-size: 0.95rem;
+    margin-top: 0.35rem;
+}
 .email-note {
     display: block;
     font-size: 0.82rem;
