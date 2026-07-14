@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wichtige Umfrage 📋</title>
+    <meta property="og:title"       content="Wichtige Umfrage 📋">
+    <meta property="og:description" content="Bitte kurz ausfüllen!">
+    <meta name="description"        content="Bitte kurz ausfüllen!">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Reihenfolge beachten: config → Bausteine → App → main -->
+    <script src="js/config.js" defer></script>
+    <script src="js/MessagePool.js" defer></script>
+    <script src="js/ReactionPopup.js" defer></script>
+    <script src="js/FloatingHearts.js" defer></script>
+    <script src="js/Confetti.js" defer></script>
+    <script src="js/DodgingButton.js" defer></script>
+    <script src="js/Modal.js" defer></script>
+    <script src="js/EmailService.js" defer></script>
+    <script src="js/DateFlowApp.js" defer></script>
+    <script src="js/main.js" defer></script>
+</head>
+<body>
+
+<main class="start-screen">
+    <h1 class="question">Willst du mit mir auf ein Date? 💕</h1>
+    <p class="tagline">Überleg nicht zu lange…</p>
+    <div class="btn-row" id="btnRow">
+        <button class="btn btn-ja" id="btnJa">Ja 💖</button>
+        <button class="btn btn-nein" id="btnNein">Nein</button>
+    </div>
+</main>
+
+<div class="overlay" id="overlay">
+    <div class="modal" id="modal"></div>
+</div>
+
+<div class="confetti-wrap" id="confettiWrap"></div>
+
+<!-- decorative memes scattered around the page -->
+<img src="images/dog-splits.png" class="deco-meme meme-bl" alt="">
+<img src="images/dog-hoodie.jpg" class="deco-meme meme-tl" alt="">
+<img src="images/cat-chain.jpg"  class="deco-meme meme-tr" alt="">
+<img src="images/dog-doge.jpg"   class="deco-meme meme-br" alt="">
+<img src="images/dog-chad.jpg"        class="deco-meme meme-ml" alt="">
+<img src="images/cat-sus.jpg"         class="deco-meme meme-mr" alt="">
+<img src="images/anim-dog-laptop.webp" class="deco-meme meme-ll" alt="">
+<img src="images/anim-husky-happy.webp" class="deco-meme meme-rl" alt="">
+<img src="images/anim-cat-loveyou.webp" class="deco-meme meme-love1" alt="">
+<img src="images/anim-dog-teamo.webp"   class="deco-meme meme-love2" alt="">
+<img src="images/at-gunter-dance.gif"   class="deco-meme meme-ul" alt="">
+<img src="images/sb-imagination.gif"    class="deco-meme meme-ur" alt="">
+<img src="images/sw-babyyoda-cozy.gif"  class="deco-meme meme-bc" alt="">
+<img src="images/sb-pants.gif"            class="deco-meme meme-tc" alt="">
+<img src="images/pocoyo-67.gif"           class="deco-meme meme-tcl" alt="">
+<img src="images/sw-babyyoda-excited.gif" class="deco-meme meme-tcr" alt="">
+<img src="images/sw-obiwan-prepare.gif"   class="deco-meme meme-ru" alt="">
+<img src="images/sw-leia-hope.gif"        class="deco-meme meme-rr" alt="">
+
+</body>
+</html>
