@@ -124,8 +124,10 @@ class DateFlowApp {
     /* ── Schritt 2: Termin, Dauer & Hype ────────────────────────────── */
 
     #showScheduleStep(verdict, gif, durationQ) {
-        /* gif darf auch eine Liste sein — dann wird zufällig eins gezogen */
-        const gifFile = Array.isArray(gif) ? gif[Math.floor(Math.random() * gif.length)] : gif;
+        /* gif darf auch eine Liste sein — dann erscheinen alle nebeneinander */
+        const gifs    = Array.isArray(gif) ? gif : [gif];
+        const gifImgs = gifs.map(g => `<img src="${AppConfig.IMAGE_PATH}${g}" class="verdict-gif" alt="">`).join('');
+        const gifHtml = gifs.length > 1 ? `<div class="verdict-gif-row">${gifImgs}</div>` : gifImgs;
         const durationHtml = durationQ ? `
             <div class="slider-block">
                 <span class="dt-label">${durationQ} ⏱️</span>
@@ -134,7 +136,7 @@ class DateFlowApp {
                 <div class="slider-value" id="durValue">2 Std.</div>
             </div>` : '';
         this.#modal.setContent(`
-            <img src="${AppConfig.IMAGE_PATH}${gifFile}" class="verdict-gif" alt="">
+            ${gifHtml}
             <div class="verdict-box">${verdict}</div>
             <p class="when-label">Wann hast du Zeit?</p>
             <div class="datetime-row">
@@ -157,18 +159,18 @@ class DateFlowApp {
             </div>
             <button class="btn-fix" data-action="fix-date">Date fixieren! 📅</button>
         `);
-        this.#markWideGif();
+        this.#markWideGifs();
     }
 
     /* Querformat-GIFs die .wide-Klasse geben, damit sie größer dargestellt werden */
-    #markWideGif() {
-        const gif = this.#modal.element.querySelector('.verdict-gif');
-        if (!gif) return;
-        const check = () => {
-            if (gif.naturalWidth > gif.naturalHeight * 1.2) gif.classList.add('wide');
-        };
-        if (gif.complete && gif.naturalWidth) check();
-        else gif.addEventListener('load', check, { once: true });
+    #markWideGifs() {
+        this.#modal.element.querySelectorAll('.verdict-gif').forEach(gif => {
+            const check = () => {
+                if (gif.naturalWidth > gif.naturalHeight * 1.2) gif.classList.add('wide');
+            };
+            if (gif.complete && gif.naturalWidth) check();
+            else gif.addEventListener('load', check, { once: true });
+        });
     }
 
     #updateDuration(value) {

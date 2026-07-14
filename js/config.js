@@ -94,7 +94,7 @@ const AppConfig = Object.freeze({
     /* boring: true    → Gähn-Popup beim Anklicken
        durationQ       → zeigt zusätzlich den Dauer-Slider
        du: true        → gestrichelter „Entscheide du"-Style
-       gif             → einzelner Dateiname oder Liste (dann wird zufällig gewählt) */
+       gif             → einzelner Dateiname oder Liste (dann alle nebeneinander) */
     ACTIVITIES: {
         essen:    { label: 'Essen gehen 🍽️', boring: true },
         walk:     { label: 'Entspannter Spaziergang 🚶‍♀️', gif: 'anim-husky-happy.webp', boring: true,

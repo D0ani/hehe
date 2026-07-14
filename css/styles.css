@@ -363,6 +363,18 @@ body {
 }
 /* Querformat-GIFs breiter zeigen, sonst wirken sie winzig */
 .verdict-gif.wide { width: 185px; }
+/* mehrere Kopf-GIFs nebeneinander (z. B. Leia + Grogu beim Kaffee-Date) */
+.verdict-gif-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.8rem;
+}
+.verdict-gif-row .verdict-gif {
+    margin: 0;
+    max-width: calc(50% - 0.3rem);
+}
 
 /* ── final screen ─────────────────────────────────────────────────────── */
 .final-title {
@@ -481,11 +493,11 @@ body {
 /* new spongebob / adventure time decorations */
 .meme-ul { top: 17%;  left:  -12px; width: 82px; transform: rotate(-9deg); animation: memeBob 5.5s ease-in-out infinite 0.4s; }
 .meme-ur { top: 44%;  right: -14px; width: 90px; transform: rotate( 8deg); animation: memeBob 4.9s ease-in-out infinite 2.0s; }
-.meme-bc { bottom: -6px; left: 50%; margin-left: -47px; width: 94px; transform: rotate(3deg); animation: memeBob 4.2s ease-in-out infinite 1.2s; }
+.meme-bc { bottom: -6px; left: 50%; margin-left: -75px; width: 150px; transform: rotate(3deg); animation: memeBob 4.2s ease-in-out infinite 1.2s; }
 /* star wars / pocoyo / spongebob decorations */
 .meme-tc  { top: 10px; left: 50%; margin-left: -37px; width: 74px; transform: rotate(-3deg); animation: memeBob 4.6s ease-in-out infinite 0.9s; }
 .meme-tcl { top: 16px; left:  21%;  width: 84px; transform: rotate(-7deg); animation: memeBob 5.2s ease-in-out infinite 1.5s; }
-.meme-tcr { top: 16px; right: 21%;  width: 92px; transform: rotate( 6deg); animation: memeBob 4.1s ease-in-out infinite 2.4s; }
+.meme-tcr { top: 16px; right: 21%;  width: 140px; transform: rotate( 6deg); animation: memeBob 4.1s ease-in-out infinite 2.4s; }
 .meme-ru  { top: 15%; right: -6px; width: 130px; transform: rotate( 8deg); animation: memeBob 5.6s ease-in-out infinite 0.2s; }
 .meme-rr  { top: 74%; right: -6px; width: 128px; transform: rotate(-6deg); animation: memeBob 4.5s ease-in-out infinite 1.1s; }
 
@@ -496,12 +508,13 @@ body {
 
 @media (max-width: 700px) {
     /* alle sichtbar, mobile-optimierte Größen */
-    /* untere Reihe in vw, damit sich die Bilder die Breite teilen statt zu überlappen */
-    .meme-bl    { width: min(20vw, 92px); bottom: 6px; left:  1vw; }
-    .meme-br    { width: min(20vw, 92px); bottom: 6px; right: 1vw; }
-    .meme-love1 { display: block; width: min(18vw, 86px); bottom: 6px; left:  23vw; transform: rotate(-5deg); }
-    .meme-love2 { display: block; width: min(18vw, 86px); bottom: 6px; right: 23vw; transform: rotate(5deg);  }
-    .meme-bc    { width: min(14vw, 60px); bottom: 4px; margin-left: max(-7vw, -30px); }
+    /* untere Reihe in vw, damit sich die Bilder die Breite teilen statt zu überlappen;
+       Baby Yoda (bc) bekommt den größten Platz in der Mitte */
+    .meme-bl    { width: min(18vw, 84px); bottom: 6px; left:  1vw; }
+    .meme-br    { width: min(18vw, 84px); bottom: 6px; right: 1vw; }
+    .meme-love1 { display: block; width: min(16vw, 76px); bottom: 6px; left:  21vw; transform: rotate(-5deg); }
+    .meme-love2 { display: block; width: min(16vw, 76px); bottom: 6px; right: 21vw; transform: rotate(5deg);  }
+    .meme-bc    { width: min(22vw, 96px); bottom: 4px; margin-left: max(-11vw, -48px); }
 
     .meme-tl    { display: block; width: 70px;  top: 6px;    left: 6px;    transform: rotate(7deg);   }
     .meme-tr    { display: block; width: 70px;  top: 6px;    right: -10px; transform: rotate(9deg);   }
@@ -515,7 +528,7 @@ body {
     /* neue Deko: oben klein verteilt, rechts in die Lücken */
     .meme-tc    { width: 44px;  top: 4px;   margin-left: -22px; }
     .meme-tcl   { width: 44px;  top: 10px;  left:  24%; }
-    .meme-tcr   { width: 46px;  top: 10px;  right: 24%; }
+    .meme-tcr   { width: 82px;  top: 8px;   right: 21%; }
     .meme-ru    { width: 88px;  top: 13%;   right: -4px; }
     .meme-rr    { width: 88px;  top: 74%;   right: -4px; }
 }
