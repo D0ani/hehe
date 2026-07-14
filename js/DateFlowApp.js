@@ -24,11 +24,20 @@ class DateFlowApp {
     }
 
     init() {
-        document.getElementById('btnJa')
-            .addEventListener('click', e => this.#handleJa(e));
+        const btnJa = document.getElementById('btnJa');
+        btnJa.addEventListener('click', e => this.#handleJa(e));
 
         new DodgingButton(document.getElementById('btnNein'), {
-            onDodge: (x, y) => this.#popup.show(x, y, this.#neinPool.next()),
+            maxDodges: AppConfig.NEIN_MAX_DODGES,
+            onDodge: (x, y, count) => {
+                this.#popup.show(x, y, this.#neinPool.next());
+                /* der Ja-Button wächst mit jedem Ausweichversuch */
+                btnJa.style.setProperty('--ja-scale', Math.min(1 + count * 0.05, 1.45));
+            },
+            onGiveUp: btn => {
+                btn.textContent = AppConfig.NEIN_GIVEUP_TEXT;
+                btn.addEventListener('click', e => this.#handleJa(e), { once: true });
+            },
         });
 
         this.#modal.element.addEventListener('click', e => this.#handleModalClick(e));
@@ -166,13 +175,17 @@ class DateFlowApp {
 
     #updateHype(value) {
         document.getElementById('hypeValue').textContent = AppConfig.HYPE_LEVELS[value];
-        if (+value === AppConfig.HYPE_LEVELS.length - 1) this.#confetti.launch(24);
+        if (+value === AppConfig.HYPE_LEVELS.length - 1) {
+            this.#confetti.launch(24);
+            this.#confetti.launchEmoji(AppConfig.MAUSIG_EMOJIS, 16);
+        }
     }
 
     /* ── Schritt 3: Bestätigung + E-Mail ────────────────────────────── */
 
     #fixDate(duDecide) {
         let formatted;
+        let dateObj = null;
         if (duDecide) {
             formatted = 'Entscheide du 😏🎲';
         } else {
@@ -180,8 +193,8 @@ class DateFlowApp {
             const timeInput = document.getElementById('timeInput');
             if (!this.#validateInputs([dateInput, timeInput])) return;
 
-            const dt  = new Date(`${dateInput.value}T${timeInput.value}`);
-            formatted = dt.toLocaleDateString('de-DE', {
+            dateObj   = new Date(`${dateInput.value}T${timeInput.value}`);
+            formatted = dateObj.toLocaleDateString('de-DE', {
                 weekday: 'long', year: 'numeric', month: 'long',
                 day: 'numeric', hour: '2-digit', minute: '2-digit',
             });
@@ -189,10 +202,14 @@ class DateFlowApp {
 
         const durSlider = document.getElementById('durSlider');
         const duration  = durSlider ? `${String(durSlider.value).replace('.', ',')} Std.` : '';
-        const hype      = AppConfig.HYPE_LEVELS[document.getElementById('hypeSlider').value];
+        const hypeIndex = +document.getElementById('hypeSlider').value;
+        const hype      = AppConfig.HYPE_LEVELS[hypeIndex];
 
-        this.#showFinalStep(formatted, duration, hype);
+        this.#showFinalStep(formatted, duration, hype, dateObj);
         this.#confetti.launch(220);
+        if (hypeIndex === AppConfig.HYPE_LEVELS.length - 1) {
+            this.#confetti.launchEmoji(AppConfig.MAUSIG_EMOJIS, 28);
+        }
         this.#email.sendConfirmation({
             activity: this.#activity.label,
             dateTime: formatted,
@@ -216,7 +233,7 @@ class DateFlowApp {
         return ok;
     }
 
-    #showFinalStep(formatted, duration, hype) {
+    #showFinalStep(formatted, duration, hype, dateObj) {
         const finalGif = this.#finalGifPool.next();
         this.#modal.setContent(`
             <p class="final-title">Perfekt! Ist notiert.<br>Ich zähle die Tage! ❤️</p>
@@ -229,7 +246,22 @@ class DateFlowApp {
                     <br>🔥 Hype-Level: ${hype}
                 </div>
             </div>
+            <div class="countdown-line">${this.#countdownText(dateObj)}</div>
             <span class="email-note">📬 Eine Bestätigung wurde verschickt!</span>
         `);
+    }
+
+    #countdownText(dateObj) {
+        if (!dateObj) return 'Countdown folgt, sobald ich das Datum verkündet habe 😏🐭';
+        /* Kalendertage zählen, nicht 24h-Blöcke — „morgen" gilt ab Mitternacht */
+        const today  = new Date();
+        const target = new Date(dateObj);
+        today.setHours(0, 0, 0, 0);
+        target.setHours(0, 0, 0, 0);
+        const days = Math.round((target - today) / 86400000);
+        if (days < 0)   return 'Moment… das war in der Vergangenheit?! 🤨⏰';
+        if (days === 0) return 'Es ist HEUTE so weit!! 🐭🎉';
+        if (days === 1) return 'Schon MORGEN! 🐭💕';
+        return `Noch ${days} Tage bis zum Date! 🐭💕`;
     }
 }

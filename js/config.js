@@ -17,6 +17,25 @@ const AppConfig = Object.freeze({
     FOOD_GIF:   'sb-excited.gif',
     BORING_IMG: 'anim-boring.webp',
 
+    /* Nein-Button: nach so vielen Ausweichversuchen gibt er auf */
+    NEIN_MAX_DODGES:   8,
+    NEIN_GIVEUP_TEXT:  'Okay okay… frag mich einfach 🥺',
+
+    /* Emoji-Regen beim maximalen Hype-Level */
+    MAUSIG_EMOJIS: ['🐭', '💕', '🧀', '✨'],
+
+    /* Herzchen-Plopp beim Anklicken der Deko-Memes */
+    BOOP_EMOJIS: ['💕', '💖', '✨', '🐭'],
+
+    /* Rotierende Untertitel auf der Startseite */
+    TAGLINES: [
+        'Überleg nicht zu lange…',
+        'Tick tack ⏰',
+        'Ich warte… 👀',
+        'Mausi?? 🥺',
+        'Der Ja-Button beißt nicht 😌',
+    ],
+
     NEIN_MSGS: [
         { img: 'cat-sus.jpg',              text: 'Bro was?! 😐' },
         { img: 'dog-sideeye.jpg',          text: 'Alter, WIRKLICH?? 😒' },
