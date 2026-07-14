@@ -10,6 +10,9 @@ const AppConfig = Object.freeze({
 
     CONFETTI_COLORS: ['#f06292', '#ad1457', '#ffd700', '#ff85a1', '#ffffff', '#ff4081', '#e91e63', '#ffc0cb', '#ffb7c5'],
 
+    /* wird bei JEDEM Konfetti-Schuss mit eingestreut (Bilder oder Emojis) */
+    CONFETTI_SPRINKLE: ['sw-babyyoda-cute.png'],
+
     HYPE_LEVELS: ['meh 😐', 'ganz okay 🙂', 'klingt nice 😄', 'hyped 🤩', 'mega hyped 🔥', 'MAUSIG ULTRA PRO MAX 🚀💥'],
     HYPE_DEFAULT: 3,
 
@@ -22,7 +25,7 @@ const AppConfig = Object.freeze({
     NEIN_GIVEUP_TEXT:  'Okay okay… frag mich einfach 🥺',
 
     /* Regen beim maximalen Hype-Level — Emojis und Bild-Dateien mischbar */
-    MAUSIG_RAIN: ['🐭', '💕', '✨', 'sw-babyyoda-cozy.gif', 'sw-babyyoda-excited.gif'],
+    MAUSIG_RAIN: ['🐭', '💕', '✨', 'sw-babyyoda-cute.png'],
 
     /* Herzchen-Plopp beim Anklicken der Deko-Memes */
     BOOP_EMOJIS: ['💕', '💖', '✨', '🐭'],

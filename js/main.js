@@ -7,7 +7,7 @@ new TaglineRotator(document.querySelector('.tagline'), AppConfig.TAGLINES).start
 const app = new DateFlowApp({
     modal:    new Modal(document.getElementById('overlay'), document.getElementById('modal')),
     popup:    new ReactionPopup({ imagePath: AppConfig.IMAGE_PATH }),
-    confetti: new Confetti(document.getElementById('confettiWrap'), AppConfig.CONFETTI_COLORS, AppConfig.IMAGE_PATH),
+    confetti: new Confetti(document.getElementById('confettiWrap'), AppConfig.CONFETTI_COLORS, AppConfig.IMAGE_PATH, AppConfig.CONFETTI_SPRINKLE),
     email:    new EmailService(AppConfig.EMAIL_ENDPOINT),
 });
 app.init();

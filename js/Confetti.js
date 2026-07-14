@@ -3,16 +3,22 @@ class Confetti {
     #wrap;
     #colors;
     #imagePath;
+    #sprinkle;
 
-    constructor(wrapElement, colors, imagePath = 'images/') {
+    constructor(wrapElement, colors, imagePath = 'images/', sprinkle = []) {
         this.#wrap      = wrapElement;
         this.#colors    = colors;
         this.#imagePath = imagePath;
+        this.#sprinkle  = sprinkle;
     }
 
     launch(count = 130) {
         for (let i = 0; i < count; i++) {
             setTimeout(() => this.#spawnPiece(), i * 18);
+        }
+        /* bei jedem Konfetti ein paar Sprinkle-Bilder (Baby Yoda!) mitregnen lassen */
+        if (this.#sprinkle.length) {
+            this.launchRain(this.#sprinkle, Math.min(16, Math.max(2, Math.round(count / 9))));
         }
     }
 
@@ -34,7 +40,7 @@ class Confetti {
             `animation:confettiFall ${dur}s linear forwards;`;
         if (isImage) {
             el.src = this.#imagePath + item;
-            style += `width:${(Math.random() * 18 + 30).toFixed(0)}px;border-radius:8px;`;
+            style += `width:${(Math.random() * 22 + 40).toFixed(0)}px;border-radius:8px;`;
         } else {
             el.textContent = item;
             style += `font-size:${(Math.random() * 14 + 16).toFixed(0)}px;`;
