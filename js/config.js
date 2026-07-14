@@ -21,8 +21,8 @@ const AppConfig = Object.freeze({
     NEIN_MAX_DODGES:   8,
     NEIN_GIVEUP_TEXT:  'Okay okay… frag mich einfach 🥺',
 
-    /* Emoji-Regen beim maximalen Hype-Level */
-    MAUSIG_EMOJIS: ['🐭', '💕', '🧀', '✨'],
+    /* Regen beim maximalen Hype-Level — Emojis und Bild-Dateien mischbar */
+    MAUSIG_RAIN: ['🐭', '💕', '✨', 'sw-babyyoda-cozy.gif', 'sw-babyyoda-excited.gif'],
 
     /* Herzchen-Plopp beim Anklicken der Deko-Memes */
     BOOP_EMOJIS: ['💕', '💖', '✨', '🐭'],

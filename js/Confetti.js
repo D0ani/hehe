@@ -2,10 +2,12 @@
 class Confetti {
     #wrap;
     #colors;
+    #imagePath;
 
-    constructor(wrapElement, colors) {
-        this.#wrap   = wrapElement;
-        this.#colors = colors;
+    constructor(wrapElement, colors, imagePath = 'images/') {
+        this.#wrap      = wrapElement;
+        this.#colors    = colors;
+        this.#imagePath = imagePath;
     }
 
     launch(count = 130) {
@@ -14,22 +16,32 @@ class Confetti {
         }
     }
 
-    /* Emoji-Regen, z. B. Mäuse + Herzen beim maximalen Hype-Level */
-    launchEmoji(emojis, count = 20) {
+    /* Regen aus Emojis und/oder kleinen Bildern (Einträge mit Bild-Endung
+       werden als <img> gerendert), z. B. beim maximalen Hype-Level */
+    launchRain(items, count = 20) {
         for (let i = 0; i < count; i++) {
-            setTimeout(() => {
-                const s   = document.createElement('div');
-                const dur = (Math.random() * 2.2 + 2.2).toFixed(2);
-                s.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-                s.style.cssText =
-                    'position:absolute;top:-34px;' +
-                    `left:${(Math.random() * 100).toFixed(1)}vw;` +
-                    `font-size:${(Math.random() * 14 + 16).toFixed(0)}px;` +
-                    `animation:confettiFall ${dur}s linear forwards;`;
-                this.#wrap.appendChild(s);
-                setTimeout(() => s.remove(), (+dur + 0.7) * 1000);
-            }, i * 60);
+            setTimeout(() => this.#spawnRainItem(items[Math.floor(Math.random() * items.length)]), i * 60);
         }
+    }
+
+    #spawnRainItem(item) {
+        const isImage = /\.(gif|png|webp|jpe?g)$/i.test(item);
+        const el      = document.createElement(isImage ? 'img' : 'div');
+        const dur     = (Math.random() * 2.2 + 2.2).toFixed(2);
+        let style =
+            'position:absolute;top:-60px;' +
+            `left:${(Math.random() * 100).toFixed(1)}vw;` +
+            `animation:confettiFall ${dur}s linear forwards;`;
+        if (isImage) {
+            el.src = this.#imagePath + item;
+            style += `width:${(Math.random() * 18 + 30).toFixed(0)}px;border-radius:8px;`;
+        } else {
+            el.textContent = item;
+            style += `font-size:${(Math.random() * 14 + 16).toFixed(0)}px;`;
+        }
+        el.style.cssText = style;
+        this.#wrap.appendChild(el);
+        setTimeout(() => el.remove(), (+dur + 0.7) * 1000);
     }
 
     #spawnPiece() {

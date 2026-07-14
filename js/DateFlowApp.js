@@ -177,7 +177,7 @@ class DateFlowApp {
         document.getElementById('hypeValue').textContent = AppConfig.HYPE_LEVELS[value];
         if (+value === AppConfig.HYPE_LEVELS.length - 1) {
             this.#confetti.launch(24);
-            this.#confetti.launchEmoji(AppConfig.MAUSIG_EMOJIS, 16);
+            this.#confetti.launchRain(AppConfig.MAUSIG_RAIN, 16);
         }
     }
 
@@ -208,7 +208,7 @@ class DateFlowApp {
         this.#showFinalStep(formatted, duration, hype, dateObj);
         this.#confetti.launch(220);
         if (hypeIndex === AppConfig.HYPE_LEVELS.length - 1) {
-            this.#confetti.launchEmoji(AppConfig.MAUSIG_EMOJIS, 28);
+            this.#confetti.launchRain(AppConfig.MAUSIG_RAIN, 28);
         }
         this.#email.sendConfirmation({
             activity: this.#activity.label,
