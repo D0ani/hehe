@@ -22,7 +22,7 @@ const AppConfig = Object.freeze({
     HYPE_DEFAULT: 3,
 
     FINAL_GIFS: ['cat-dance.gif', 'sb-dance.gif', 'sw-hansolo-iknow.gif'],
-    FOOD_GIF:   'sb-excited.gif',
+    FOOD_GIF:   ['sw-grogu-cookies.gif', 'sb-excited.gif'],
     BORING_IMG: 'anim-boring.webp',
 
     /* Nein-Button: nach so vielen Ausweichversuchen gibt er auf */
@@ -62,6 +62,7 @@ const AppConfig = Object.freeze({
         { img: 'sb-tears.gif',             text: 'Ich hab diese Seite mit meinem Herz gebaut 😭' },
         { img: 'sb-crying.gif',            text: 'WARUM tust du mir das an?! 😭' },
         { img: 'at-dealwithit.gif',        text: '„Nein" gibt\'s hier nicht. Deal with it 😎' },
+        { img: 'sw-mousedroid.gif',        text: 'Ich schicke den Maus-Droiden los. 🐭' },
     ],
 
     ABBRUCH_MSGS: [
@@ -82,6 +83,7 @@ const AppConfig = Object.freeze({
         { img: 'sb-patrick-hyped.gif', text: 'BESTE Entscheidung!! 🎉' },
         { img: 'at-finn-hyped.gif',    text: 'LET\'S GOOO!! ✨' },
         { img: 'sb-happy.gif',         text: 'Mausiiiiggg! 😁' },
+        { img: 'sw-grogu-giggle.gif',  text: 'Hihi, gute Wahl 🐭' },
     ],
 
     BORING_TEXTS: [
