@@ -8,7 +8,7 @@ class EmailService {
         this.#subject  = subject;
     }
 
-    async sendConfirmation({ activity, dateTime, food, duration, hype }) {
+    async sendConfirmation({ activity, dateTime, food, duration, hype, wishes }) {
         const fields = {
             '_subject':  this.#subject,
             '_captcha':  'false',
@@ -17,8 +17,9 @@ class EmailService {
             'Datum & Uhrzeit': dateTime,
             'Hype-Level':      hype,
         };
-        if (food)     fields['Essensrichtung'] = food;
-        if (duration) fields['Dauer']          = duration;
+        if (food)     fields['Essensrichtung']  = food;
+        if (duration) fields['Dauer']           = duration;
+        if (wishes)   fields['Weitere Wünsche'] = wishes;
 
         try {
             await fetch(this.#endpoint, {

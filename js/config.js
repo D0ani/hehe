@@ -93,7 +93,15 @@ const AppConfig = Object.freeze({
         'Gääähn… aber okay, du Klassiker. 🥱',
     ],
 
-    /* boring: true    → Gähn-Popup beim Anklicken
+    /* „Noch eine Aktivität dazu?"-Knopf bei den Weiteren Wünschen
+       (erscheint nur bei den einfachen Aktivitäten mit boring: true) */
+    ADDON_TOGGLE: '➕ Noch eine Aktivität dazu?',
+
+    /* Freitextfeld beim Termin-Schritt */
+    WISH_LABEL:       'Weitere Wünsche 📝',
+    WISH_PLACEHOLDER: 'Extrawünsche, Ideen, Snacks… 🐭',
+
+    /* boring: true    → Gähn-Popup beim Anklicken + Aktivitäts-Anhängsel bei den Wünschen
        durationQ       → zeigt zusätzlich den Dauer-Slider
        du: true        → gestrichelter „Entscheide du"-Style
        gif             → einzelner Dateiname oder Liste (dann alle nebeneinander) */

@@ -219,6 +219,71 @@ body {
     box-shadow: 0 7px 18px rgba(173, 20, 87, 0.28);
 }
 
+/* ── „Noch eine Aktivität dazu?" bei den Weiteren Wünschen ────────────── */
+.addon-toggle {
+    display: block;
+    width: 100%;
+    padding: 0.55rem 1rem;
+    margin-bottom: 0.55rem;
+    border: 2px dashed #f4b8c8;
+    border-radius: 50px;
+    background: #fffafa;
+    color: #c06080;
+    font-size: 0.88rem;
+    font-family: 'Nunito', 'Segoe UI', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.22s ease;
+}
+.addon-toggle:hover {
+    background: linear-gradient(135deg, #f06292, #ad1457);
+    color: #fff;
+    border-color: transparent;
+}
+.addon-panel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    padding: 0.6rem 0.7rem;
+    margin-bottom: 0.55rem;
+    background: #fff5f8;
+    border: 2px dashed #f4b8c8;
+    border-radius: 16px;
+}
+.addon-panel[hidden] { display: none; }
+.addon-btn {
+    padding: 0.42rem 0.85rem;
+    border: 2px solid #f4b8c8;
+    border-radius: 50px;
+    background: #fff;
+    color: #ad1457;
+    font-size: 0.82rem;
+    font-family: 'Nunito', 'Segoe UI', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.22s ease;
+}
+.addon-btn:hover {
+    background: linear-gradient(135deg, #f06292, #ad1457);
+    color: #fff;
+    border-color: transparent;
+    transform: translateY(-1px);
+}
+.addon-btn.selected {
+    background: linear-gradient(135deg, #f06292, #ad1457);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 4px 12px rgba(173, 20, 87, 0.3);
+}
+
+/* ── „Weitere Wünsche"-Textfeld ───────────────────────────────────────── */
+.wish-input {
+    resize: none;
+    min-height: 74px;
+    line-height: 1.5;
+    font-size: 0.92rem;
+}
+
 /* ── abbruch button ───────────────────────────────────────────────────── */
 .btn-abbruch {
     background: none;

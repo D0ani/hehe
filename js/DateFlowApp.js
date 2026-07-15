@@ -13,8 +13,10 @@ class DateFlowApp {
     #boringPool   = new MessagePool(AppConfig.BORING_TEXTS);
     #finalGifPool = new MessagePool(AppConfig.FINAL_GIFS);
 
-    #activity  = null;
-    #foodLabel = '';
+    #activity    = null;
+    #activityKey = null;
+    #addonKey    = null;
+    #foodLabel   = '';
 
     constructor({ modal, popup, confetti, email }) {
         this.#modal    = modal;
@@ -57,10 +59,12 @@ class DateFlowApp {
         const btn = e.target.closest('[data-action]');
         if (!btn) return;
         switch (btn.dataset.action) {
-            case 'activity': this.#pickActivity(btn.dataset.key, e);       break;
-            case 'food':     this.#pickFood(btn.dataset.key);              break;
-            case 'abort':    this.#popup.showAtElement(btn, this.#abbruchPool.next()); break;
-            case 'fix-date': this.#fixDate(btn.hasAttribute('data-du'));   break;
+            case 'activity':        this.#pickActivity(btn.dataset.key, e);       break;
+            case 'food':            this.#pickFood(btn.dataset.key);              break;
+            case 'abort':           this.#popup.showAtElement(btn, this.#abbruchPool.next()); break;
+            case 'fix-date':        this.#fixDate(btn.hasAttribute('data-du'));   break;
+            case 'toggle-addons':   this.#toggleAddons();                         break;
+            case 'pick-addon':      this.#pickAddon(btn);                         break;
         }
     }
 
@@ -80,9 +84,18 @@ class DateFlowApp {
         `);
     }
 
+    /* Nutzereingaben sicher in HTML einbetten */
+    #esc(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
     #pickActivity(key, e) {
-        this.#activity  = AppConfig.ACTIVITIES[key];
-        this.#foodLabel = '';
+        this.#activity    = AppConfig.ACTIVITIES[key];
+        this.#activityKey = key;
+        this.#addonKey    = null;
+        this.#foodLabel   = '';
         if (this.#activity.boring) {
             this.#popup.show(e.clientX, e.clientY, {
                 img:  AppConfig.BORING_IMG,
@@ -157,9 +170,46 @@ class DateFlowApp {
                 <div class="slider-ends"><span>meh</span><span>Ultra Pro Max</span></div>
                 <div class="slider-value" id="hypeValue">${AppConfig.HYPE_LEVELS[AppConfig.HYPE_DEFAULT]}</div>
             </div>
+            <div class="slider-block">
+                <span class="dt-label">${AppConfig.WISH_LABEL}</span>
+                ${this.#renderAddonBlock()}
+                <textarea class="date-input wish-input" id="wishInput" rows="3" maxlength="300"
+                          placeholder="${AppConfig.WISH_PLACEHOLDER}"></textarea>
+            </div>
             <button class="btn-fix" data-action="fix-date">Date fixieren! 📅</button>
         `);
         this.#markWideGifs();
+    }
+
+    /* Bei einfachen Aktivitäten: Knopf + aufklappbare Liste aller anderen
+       Aktivitäten, um eine davon ans Date anzuhängen (z. B. Kaffee + Spaziergang) */
+    #renderAddonBlock() {
+        if (!this.#activity?.boring) return '';
+        const pills = Object.entries(AppConfig.ACTIVITIES)
+            .filter(([key, item]) => key !== this.#activityKey && !item.du)
+            .map(([key, item]) => `<button class="addon-btn" data-action="pick-addon" data-addon="${key}">+ ${item.label}</button>`)
+            .join('\n');
+        return `
+            <button class="addon-toggle" data-action="toggle-addons">${AppConfig.ADDON_TOGGLE}</button>
+            <div class="addon-panel" id="addonPanel" hidden>${pills}</div>`;
+    }
+
+    #toggleAddons() {
+        const panel = document.getElementById('addonPanel');
+        panel.hidden = !panel.hidden;
+    }
+
+    /* Anhängsel wählen — nochmal klicken wählt wieder ab */
+    #pickAddon(btn) {
+        const wasSelected = btn.classList.contains('selected');
+        this.#modal.element.querySelectorAll('.addon-btn').forEach(b => b.classList.remove('selected'));
+        if (wasSelected) {
+            this.#addonKey = null;
+            return;
+        }
+        btn.classList.add('selected');
+        this.#addonKey = btn.dataset.addon;
+        this.#confetti.launch(30);
     }
 
     /* Querformat-GIFs die .wide-Klasse geben, damit sie größer dargestellt werden */
@@ -208,25 +258,28 @@ class DateFlowApp {
         const duration  = durSlider ? `${String(durSlider.value).replace('.', ',')} Std.` : '';
         const hypeIndex = +document.getElementById('hypeSlider').value;
         const hype      = AppConfig.HYPE_LEVELS[hypeIndex];
+        const wishes     = document.getElementById('wishInput')?.value.trim() ?? '';
+        const addonLabel = this.#addonKey ? AppConfig.ACTIVITIES[this.#addonKey].label : '';
 
-        this.#showFinalStep(formatted, duration, hype, dateObj);
+        this.#showFinalStep(formatted, duration, hype, dateObj, wishes, addonLabel);
         this.#confetti.launch(220);
         if (hypeIndex === AppConfig.HYPE_LEVELS.length - 1) {
             this.#confetti.launchRain(AppConfig.MAUSIG_RAIN, 28);
         }
         this.#email.sendConfirmation({
-            activity: this.#activity.label,
+            activity: addonLabel ? `${this.#activity.label} + ${addonLabel}` : this.#activity.label,
             dateTime: formatted,
             food:     this.#foodLabel,
             duration,
             hype,
+            wishes,
         });
     }
 
     #validateInputs(inputs) {
         let ok = true;
         inputs.forEach(input => {
-            if (!input.value) {
+            if (!input.value.trim()) {
                 input.classList.remove('error');
                 void input.offsetHeight;
                 input.classList.add('error');
@@ -237,7 +290,7 @@ class DateFlowApp {
         return ok;
     }
 
-    #showFinalStep(formatted, duration, hype, dateObj) {
+    #showFinalStep(formatted, duration, hype, dateObj, wishes, addonLabel) {
         const finalGif = this.#finalGifPool.next();
         this.#modal.setContent(`
             <p class="final-title">Perfekt! Ist notiert.<br>Ich zähle die Tage! ❤️</p>
@@ -246,8 +299,10 @@ class DateFlowApp {
                 <div class="final-date-box">
                     📅 ${formatted}
                     ${this.#foodLabel ? `<br>🍽️ ${this.#foodLabel}` : ''}
+                    ${addonLabel ? `<br>➕ Dazu: ${addonLabel}` : ''}
                     ${duration ? `<br>⏱️ Dauer: ${duration}` : ''}
                     <br>🔥 Hype-Level: ${hype}
+                    ${wishes ? `<br>📝 Wünsche: ${this.#esc(wishes)}` : ''}
                 </div>
             </div>
             <div class="countdown-line">${this.#countdownText(dateObj)}</div>
